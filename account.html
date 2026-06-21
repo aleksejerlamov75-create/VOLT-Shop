@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VOLT - Личный кабинет</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="фото/логотип.jpg">
+            <span>VOLT</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="index.html#catalog">Каталог</a></li>
+                <li><a href="index.html#about">О нас</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div id="login-section" class="auth-box">
+            <h2>Вход в аккаунт</h2>
+            <input type="email" id="login-email" class="auth-input" placeholder="Email">
+            <input type="password" id="login-pass" class="auth-input" placeholder="Пароль">
+            <button class="btn-login" onclick="doLogin()">Войти</button>
+            <p>Нет аккаунта? <a href="#" onclick="toggleForms('reg')">Регистрация</a></p>
+        </div>
+
+        <div id="reg-section" class="auth-box" style="display:none">
+            <h2>Регистрация</h2>
+            <input type="text" id="reg-name" class="auth-input" placeholder="ФИО">
+            <input type="email" id="reg-email" class="auth-input" placeholder="Email">
+            <input type="password" id="reg-pass" class="auth-input" placeholder="Пароль">
+            <button class="btn-login" onclick="doRegister()">Зарегистрироваться</button>
+            <p>Уже есть аккаунт? <a href="#" onclick="toggleForms('login')">Войти</a></p>
+        </div>
+
+        <div id="profile-section" class="profile-view">
+            <div class="profile-data">
+                <div class="profile-avatar-wrapper">
+                    <img id="profile-avatar" src="фото/пустая аватарка.png">
+                </div>
+                <h2 id="profile-name-display">Пользователь</h2>
+                <p id="profile-email-display"></p>
+                <hr style="margin:20px 0">
+                <label>ФИО</label>
+                <input type="text" id="p-name" class="auth-input">
+                <label>Телефон</label>
+                <input type="tel" id="p-phone" class="auth-input">
+                <label>Email</label>
+                <input type="email" id="p-email" class="auth-input" disabled>
+                <button class="btn-login" onclick="saveProfile()">Сохранить изменения</button>
+            </div>
+            <div class="profile-menu">
+                <h3>Управление</h3>
+                <button class="menu-btn" onclick="showSection('security')">Безопасность</button>
+                <button class="menu-btn" onclick="showSection('orders')">История заказов</button>
+                <button class="menu-btn" onclick="showSection('addresses')">Адреса доставки</button>
+                <button class="menu-btn danger" onclick="doLogout()">Выйти</button>
+            </div>
+        </div>
+
+        <div id="security-section" class="auth-box" style="display:none">
+            <h2>Безопасность</h2>
+            <input type="password" id="sec-old" class="auth-input" placeholder="Текущий пароль">
+            <input type="password" id="sec-new" class="auth-input" placeholder="Новый пароль">
+            <input type="password" id="sec-confirm" class="auth-input" placeholder="Подтвердите пароль">
+            <button class="btn-login" onclick="changePass()">Сменить пароль</button>
+            <button class="btn-reg" onclick="backToProfile()">Назад</button>
+        </div>
+
+        <div id="orders-section" class="auth-box" style="display:none; max-width:800px">
+            <h2>История заказов</h2>
+            <div id="orders-list"></div>
+            <button class="btn-reg" onclick="backToProfile()">Назад</button>
+        </div>
+
+        <div id="addresses-section" class="auth-box" style="display:none; max-width:800px">
+            <h2>Адреса доставки</h2>
+            <div id="addresses-list"></div>
+            <button class="btn-login" onclick="addAddress()">Добавить адрес</button>
+            <button class="btn-reg" onclick="backToProfile()">Назад</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>VOLTShop</p>
+        <p>Подольск, ул. Пушкино, д.Колотушкино</p>
+        <p>8 (800) 888-88-88</p>
+        <p>Все права защищены</p>
+    </footer>
+
+    <script src="account.js"></script>
+</body>
+</html>

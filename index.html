@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VOLT Shop</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="фото/логотип.jpg">
+            <span>VOLT</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a id="nav-home" class="active" onclick="showPage('home')">Главная</a></li>
+                <li><a id="nav-catalog" onclick="showPage('catalog')">Каталог</a></li>
+                <li><a id="nav-about" onclick="showPage('about')">О нас</a></li>
+            </ul>
+        </nav>
+        <div class="header-icons">
+            <div class="social-links">
+               <a href="https://chat.whatsapp.com/J6BqdCgva0RI5x182CZqiF" target="_blank"><img src="фото/вацап.png"></a>
+                <a href="https://vk.ru/club238957763" target="_blank"><img src="фото/вк.png"></a>
+                <a href="https://t.me/+KDZyAeaSKfkxYzFi" target="_blank"><img src="фото/телеграмм.png"></a>
+        </div>
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="search-input" placeholder="Поиск..." oninput="filterProducts()">
+            </div>
+            <div class="icon-btn" onclick="toggleCart()">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count" id="cart-count">0</span>
+            </div>
+            <div class="icon-btn" onclick="toggleFavorites()">
+                <i class="fas fa-heart"></i>
+                <span class="cart-count" id="fav-count">0</span>
+            </div>
+            <div class="avatar" onclick="toggleAccountModal()">
+                <img id="header-avatar-img" src="фото/пустая аватарка.png">
+            </div>
+        </div>
+    </header>
+
+    <div class="cart-modal" id="cart-modal">
+        <div class="cart-header">
+            <span>Корзина</span>
+            <i class="fas fa-times" onclick="toggleCart()" style="cursor:pointer"></i>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <p class="empty-cart">Пусто</p>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Итого:</span>
+                <span id="cart-total">0 ₽</span>
+            </div>
+            <button class="btn-add">Оформить</button>
+        </div>
+    </div>
+
+    <div class="favorites-modal" id="favorites-modal">
+        <div class="fav-header">
+            <span>Избранное</span>
+            <i class="fas fa-times" onclick="toggleFavorites()" style="cursor:pointer"></i>
+        </div>
+        <div class="fav-items" id="fav-items">
+            <p class="empty-cart">Пусто</p>
+        </div>
+    </div>
+
+    <div class="account-modal" id="account-modal">
+        <div class="account-header">
+            <span id="account-modal-title">Вход в аккаунт</span>
+            <i class="fas fa-times" onclick="toggleAccountModal()" style="cursor:pointer"></i>
+        </div>
+        <div class="account-content">
+            <div id="login-form" class="account-form">
+                <input type="email" id="login-email" class="auth-input" placeholder="Email">
+                <input type="password" id="login-pass" class="auth-input" placeholder="Пароль">
+                <button class="btn-login" onclick="doLogin()">Войти</button>
+                <p class="auth-switch">Нет аккаунта? <a href="#" onclick="showRegForm()">Регистрация</a></p>
+            </div>
+            <div id="reg-form" class="account-form" style="display:none">
+                <input type="text" id="reg-name" class="auth-input" placeholder="ФИО">
+                <input type="email" id="reg-email" class="auth-input" placeholder="Email">
+                <input type="password" id="reg-pass" class="auth-input" placeholder="Пароль">
+                <button class="btn-login" onclick="doRegister()">Зарегистрироваться</button>
+                <p class="auth-switch">Уже есть аккаунт? <a href="#" onclick="showLoginForm()">Войти</a></p>
+            </div>
+            <div id="profile-form" class="account-form" style="display:none">
+                <div class="profile-mini">
+                    <img id="profile-avatar-small" src="фото/пустая аватарка.png" alt="Аватар">
+                    <h3 id="profile-name-display">Пользователь</h3>
+                    <p id="profile-email-display"></p>
+                </div>
+                <button class="menu-btn" onclick="window.location.href='account.html'">Открыть профиль</button>
+                <button class="menu-btn danger" onclick="doLogout()">Выйти</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-home" class="page-section active">
+        <div class="container">
+            <div class="hero-banner">
+                <img src="фото/Баннер.jpg" alt="Hero">
+                <div class="hero-overlay">
+                    <div class="hero-content">
+                        <h1>Энергия технологий</h1>
+                        <p>Лучшая электроника по выгодным ценам. Быстрая доставка и гарантия.</p>
+                        <a class="hero-btn" onclick="showPage('catalog')">Перейти в каталог</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="brands">
+                <div class="brand-item">Apple</div>
+                <div class="brand-item">Samsung</div>
+                <div class="brand-item">Xiaomi</div>
+                <div class="brand-item">Sony</div>
+            </div>
+
+            <h2 class="section-title">Хиты продаж</h2>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-img">
+                        <img src="фото/IPHONE 15 PRO MAX.jpg" alt="iPhone 15 Pro Max">
+                        <div class="product-actions">
+                            <div class="action-btn" data-name="iPhone 15 Pro Max" onclick="toggleFavorite(event, 'iPhone 15 Pro Max', 149990)">
+                                <i class="far fa-heart"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">iPhone 15 Pro Max</div>
+                        <div class="product-price">149 990 ₽</div>
+                        <button class="btn-fav-inline" data-name="iPhone 15 Pro Max" onclick="toggleFavorite(event, 'iPhone 15 Pro Max', 149990)">
+                            <i class="far fa-heart"></i> В избранное
+                        </button>
+                        <button class="btn-add" onclick="addToCart('iPhone 15 Pro Max', 149990)">В корзину</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-img">
+                        <img src="фото/GALAXY S24 ULTRA.jpg" alt="Samsung Galaxy S24 Ultra">
+                        <div class="product-actions">
+                            <div class="action-btn" data-name="Samsung Galaxy S24 Ultra" onclick="toggleFavorite(event, 'Samsung Galaxy S24 Ultra', 124990)">
+                                <i class="far fa-heart"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Samsung Galaxy S24 Ultra</div>
+                        <div class="product-price">124 990 ₽</div>
+                        <button class="btn-fav-inline" data-name="Samsung Galaxy S24 Ultra" onclick="toggleFavorite(event, 'Samsung Galaxy S24 Ultra', 124990)">
+                            <i class="far fa-heart"></i> В избранное
+                        </button>
+                        <button class="btn-add" onclick="addToCart('Samsung Galaxy S24 Ultra', 124990)">В корзину</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-img">
+                        <img src="фото/MACBOOC AIR M3.jpg" alt="MacBook Air M3">
+                        <div class="product-actions">
+                            <div class="action-btn" data-name="MacBook Air M3" onclick="toggleFavorite(event, 'MacBook Air M3', 134990)">
+                                <i class="far fa-heart"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">MacBook Air M3</div>
+                        <div class="product-price">134 990 ₽</div>
+                        <button class="btn-fav-inline" data-name="MacBook Air M3" onclick="toggleFavorite(event, 'MacBook Air M3', 134990)">
+                            <i class="far fa-heart"></i> В избранное
+                        </button>
+                        <button class="btn-add" onclick="addToCart('MacBook Air M3', 134990)">В корзину</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-img">
+                        <img src="фото/Sony WH-1000XM5.jpg" alt="Sony WH-1000XM5">
+                        <div class="product-actions">
+                            <div class="action-btn" data-name="Sony WH-1000XM5" onclick="toggleFavorite(event, 'Sony WH-1000XM5', 32990)">
+                                <i class="far fa-heart"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Sony WH-1000XM5</div>
+                        <div class="product-price">32 990 ₽</div>
+                        <button class="btn-fav-inline" data-name="Sony WH-1000XM5" onclick="toggleFavorite(event, 'Sony WH-1000XM5', 32990)">
+                            <i class="far fa-heart"></i> В избранное
+                        </button>
+                        <button class="btn-add" onclick="addToCart('Sony WH-1000XM5', 32990)">В корзину</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-catalog" class="page-section">
+        <div class="container">
+            <h2 class="section-title">Каталог электроники</h2>
+
+            <div class="category-block">
+                <h3 class="category-title">Apple</h3>
+                <div class="products-grid">
+                    <div class="product-card">
+                        <div class="product-img">
+                            <img src="фото/IPHONE 15 PRO MAX.jpg" alt="iPhone 15 Pro Max 256GB">
+                            <div class="product-actions">
+                                <div class="action-btn" data-name="iPhone 15 Pro Max 256GB" onclick="toggleFavorite(event, 'iPhone 15 Pro Max 256GB', 149990)"><i class="far fa-heart"></i></div>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-title">iPhone 15 Pro Max 256GB</div>
+                            <div class="product-price">149 990 ₽</div>
+                            <button class="btn-fav-inline" data-name="iPhone 15 Pro Max 256GB" onclick="toggleFavorite(event, 'iPhone 15 Pro Max 256GB', 149990)"><i class="far fa-heart"></i> В избранное</button>
+                            <button class="btn-add" onclick="addToCart('iPhone 15 Pro Max 256GB', 149990)">В корзину</button>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-img">
+                            <img src="фото/IPHONE 15 PRO.jpg" alt="iPhone 15 Pro 128GB">
+                            <div class="product-actions">
+                                <div class="action-btn" data-name="iPhone 15 Pro 128GB" onclick="toggleFavorite(event, 'iPhone 15 Pro 128GB', 119990)"><i class="far fa-heart"></i></div>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-title">iPhone 15 Pro 128GB</div>
+                            <div class="product-price">119 990 ₽</div>
+                            <button class="btn-fav-inline" data-name="iPhone 15 Pro 128GB" onclick="toggleFavorite(event, 'iPhone 15 Pro 128GB', 119990)"><i class="far fa-heart"></i> В избранное</button>
+                            <button class="btn-add" onclick="addToCart('iPhone 15 Pro 128GB', 119990)">В корзину</button>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-img">
+                            <img src="фото/IPHONE 15.jpg" alt="iPhone 15 128GB">
+                            <div class="product-actions">
+                                <div class="action-btn" data-name="iPhone 15 128GB" onclick="toggleFavorite(event, 'iPhone 15 128GB', 89990)"><i class="far fa-heart"></i></div>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-title">iPhone 15 128GB</div>
+                            <div class="product-price">89 990 ₽</div>
+                            <button class="btn-fav-inline" data-name="iPhone 15 128GB" onclick="toggleFavorite(event, 'iPhone 15 128GB', 89990)"><i class="far fa-heart"></i> В избранное</button>
+                            <button class="btn-add" onclick="addToCart('iPhone 15 128GB', 89990)">В корзину</button>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-img">
+                            <img src="фото/IPHONE 14.jpg" alt="iPhone 14 128GB">
+                            <div class="product-actions">
+                                <div class="action-btn" data-name="iPhone 14 128GB" onclick="toggleFavorite(event, 'iPhone 14 128GB', 79990)"><i class="far fa-heart"></i></div>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-title">iPhone 14 128GB</div>
+                            <div class="product-price">79 990 ₽</div>
+                            <button class="btn-fav-inline" data-name="iPhone 14 128GB" onclick="toggleFavorite(event, 'iPhone 14 128GB', 79990)"><i class="far fa-heart"></i> В избранное</button>
+                            <button class="btn-add" onclick="addToCart('iPhone 14 128GB', 79990)">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category-block">
+                <h3 class="category-title">Samsung</h3>
+                <div class="products-grid">
+                    <div class="product-card">
+                        <div class="product-img">
+                            <img src="фото/GALAXY S24 ULTRA.jpg" alt="Galaxy S24 Ultra 256GB">
+                            <div class="product-actions">
+                                <div class="action-btn" data-name="Galaxy S24 Ultra 256GB" onclick="toggleFavorite(event, 'Galaxy S24 Ultra 256GB', 124990)"><i class="far fa-heart"></i></div>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-title">Galaxy S24 Ultra 256GB</div>
+                            <div class="product-price">124 990 ₽</div>
+                            <button class="btn-fav-inline" data-name="Galaxy S24 Ultra 256GB" onclick="toggleFavorite(event, 'Galaxy S24 Ultra 256GB', 124990)"><i class="far fa-heart"></i> В избранное</button>
+                            <button class="btn-add" onclick="addToCart('Galaxy S24 Ultra 256GB', 124990)">В корзину</button>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-img">
+                            <img src="фото/Galaxy S24 Plus.jpg" alt="Galaxy S24 Plus">
+                            <div class="product-actions">
+                                <div class="action-btn" data-name="Galaxy S24 Plus" onclick="toggleFavorite(event, 'Galaxy S24 Plus', 94990)"><i class="far fa-heart"></i></div>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-title">Galaxy S24 Plus</div>
+                            <div class="product-price">94 990 ₽</div>
+                            <button class="btn-fav-inline" data-name="Galaxy S24 Plus" onclick="toggleFavorite(event, 'Galaxy S24 Plus', 94990)"><i class="far fa-heart"></i> В избранное</button>
+                            <button class="btn-add" onclick="addToCart('Galaxy S24 Plus', 94990)">В корзину</button>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-img">
+                            <img src="фото/Galaxy S9 Ultra.jpg" alt="Galaxy Tab S9 Ultra">
+                            <div class="product-actions">
+                                <div class="action-btn" data-name="Galaxy Tab S9 Ultra" onclick="toggleFavorite(event, 'Galaxy Tab S9 Ultra', 109990)"><i class="far fa-heart"></i></div>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-title">Galaxy Tab S9 Ultra</div>
+                            <div class="product-price">109 990 ₽</div>
+                            <button class="btn-fav-inline" data-name="Galaxy Tab S9 Ultra" onclick="toggleFavorite(event, 'Galaxy Tab S9 Ultra', 109990)"><i class="far fa-heart"></i> В избранное</button>
+                            <button class="btn-add" onclick="addToCart('Galaxy Tab S9 Ultra', 109990)">В корзину</button>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-img">
+                            <img src="фото/Galaxy Buds2 Pro.jpg" alt="Galaxy Buds2 Pro">
+                            <div class="product-actions">
+                                <div class="action-btn" data-name="Galaxy Buds2 Pro" onclick="toggleFavorite(event, 'Galaxy Buds2 Pro', 14990)"><i class="far fa-heart"></i></div>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-title">Galaxy Buds2 Pro</div>
+                            <div class="product-price">14 990 ₽</div>
+                            <button class="btn-fav-inline" data-name="Galaxy Buds2 Pro" onclick="toggleFavorite(event, 'Galaxy Buds2 Pro', 14990)"><i class="far fa-heart"></i> В избранное</button>
+                            <button class="btn-add" onclick="addToCart('Galaxy Buds2 Pro', 14990)">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category-block">
+                <h3 class="category-title">Xiaomi</h3>
+                <div class="products-grid">
+                    <div class="product-card">
+                        <div class="product-img">
+                            <img src="фото/XIAOMI 14 PRO.jpg" alt="Xiaomi 14 Pro">
+                            <div class="product-actions">
+                                <div class="action-btn" data-name="Xiaomi 14 Pro" onclick="toggleFavorite(event, 'Xiaomi 14 Pro', 79990)"><i class="far fa-heart"></i></div>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-title">Xiaomi 14 Pro</div>
+                            <div class="product-price">79 990 ₽</div>
+                            <button class="btn-fav-inline" data-name="Xiaomi 14 Pro" onclick="toggleFavorite(event, 'Xiaomi 14 Pro', 79990)"><i class="far fa-heart"></i> В избранное</button>
+                            <button class="btn-add" onclick="addToCart('Xiaomi 14 Pro', 79990)">В корзину</button>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-img">
+                            <img src="фото/XIOMI 13T PRO.jpg" alt="Xiaomi 13T Pro">
+                            <div class="product-actions">
+                                <div class="action-btn" data-name="Xiaomi 13T Pro" onclick="toggleFavorite(event, 'Xiaomi 13T Pro', 54990)"><i class="far fa-heart"></i></div>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-title">Xiaomi 13T Pro</div>
+                            <div class="product-price">54 990 ₽</div>
+                            <button class="btn-fav-inline" data-name="Xiaomi 13T Pro" onclick="toggleFavorite(event, 'Xiaomi 13T Pro', 54990)"><i class="far fa-heart"></i> В избранное</button>
+                            <button class="btn-add" onclick="addToCart('Xiaomi 13T Pro', 54990)">В корзину</button>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-img">
+                            <img src="фото/NOTE 13 PRO.jpg" alt="Redmi Note 13 Pro">
+                            <div class="product-actions">
+                                <div class="action-btn" data-name="Redmi Note 13 Pro" onclick="toggleFavorite(event, 'Redmi Note 13 Pro', 29990)"><i class="far fa-heart"></i></div>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-title">Redmi Note 13 Pro</div>
+                            <div class="product-price">29 990 ₽</div>
+                            <button class="btn-fav-inline" data-name="Redmi Note 13 Pro" onclick="toggleFavorite(event, 'Redmi Note 13 Pro', 29990)"><i class="far fa-heart"></i> В избранное</button>
+                            <button class="btn-add" onclick="addToCart('Redmi Note 13 Pro', 29990)">В корзину</button>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-img">
+                            <img src="фото/PAD 6.jpg" alt="Xiaomi Pad 6">
+                            <div class="product-actions">
+                                <div class="action-btn" data-name="Xiaomi Pad 6" onclick="toggleFavorite(event, 'Xiaomi Pad 6', 34990)"><i class="far fa-heart"></i></div>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-title">Xiaomi Pad 6</div>
+                            <div class="product-price">34 990 ₽</div>
+                            <button class="btn-fav-inline" data-name="Xiaomi Pad 6" onclick="toggleFavorite(event, 'Xiaomi Pad 6', 34990)"><i class="far fa-heart"></i> В избранное</button>
+                            <button class="btn-add" onclick="addToCart('Xiaomi Pad 6', 34990)">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category-block">
+                <h3 class="category-title">Аудиотехника</h3>
+                <div class="products-grid">
+                    <div class="product-card">
+                        <div class="product-img">
+                            <img src="фото/Sony WH-1000XM5.jpg" alt="Sony WH-1000XM5">
+                            <div class="product-actions">
+                                <div class="action-btn" data-name="Sony WH-1000XM5" onclick="toggleFavorite(event, 'Sony WH-1000XM5', 32990)"><i class="far fa-heart"></i></div>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-title">Sony WH-1000XM5</div>
+                            <div class="product-price">32 990 ₽</div>
+                            <button class="btn-fav-inline" data-name="Sony WH-1000XM5" onclick="toggleFavorite(event, 'Sony WH-1000XM5', 32990)"><i class="far fa-heart"></i> В избранное</button>
+                            <button class="btn-add" onclick="addToCart('Sony WH-1000XM5', 32990)">В корзину</button>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-img">
+                            <img src="фото/QC ULTRA.jpg" alt="Bose QC Ultra">
+                            <div class="product-actions">
+                                <div class="action-btn" data-name="Bose QC Ultra" onclick="toggleFavorite(event, 'Bose QC Ultra', 38990)"><i class="far fa-heart"></i></div>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-title">Bose QC Ultra</div>
+                            <div class="product-price">38 990 ₽</div>
+                            <button class="btn-fav-inline" data-name="Bose QC Ultra" onclick="toggleFavorite(event, 'Bose QC Ultra', 38990)"><i class="far fa-heart"></i> В избранное</button>
+                            <button class="btn-add" onclick="addToCart('Bose QC Ultra', 38990)">В корзину</button>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-img">
+                            <img src="фото/TUNE 770NC.jpg" alt="JBL Tune 770NC">
+                            <div class="product-actions">
+                                <div class="action-btn" data-name="JBL Tune 770NC" onclick="toggleFavorite(event, 'JBL Tune 770NC', 7990)"><i class="far fa-heart"></i></div>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-title">JBL Tune 770NC</div>
+                            <div class="product-price">7 990 ₽</div>
+                            <button class="btn-fav-inline" data-name="JBL Tune 770NC" onclick="toggleFavorite(event, 'JBL Tune 770NC', 7990)"><i class="far fa-heart"></i> В избранное</button>
+                            <button class="btn-add" onclick="addToCart('JBL Tune 770NC', 7990)">В корзину</button>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-img">
+                            <img src="фото/TUNE 520BT.jpg" alt="JBL Tune 520BT">
+                            <div class="product-actions">
+                                <div class="action-btn" data-name="JBL Tune 520BT" onclick="toggleFavorite(event, 'JBL Tune 520BT', 3490)"><i class="far fa-heart"></i></div>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-title">JBL Tune 520BT</div>
+                            <div class="product-price">3 490 ₽</div>
+                            <button class="btn-fav-inline" data-name="JBL Tune 520BT" onclick="toggleFavorite(event, 'JBL Tune 520BT', 3490)"><i class="far fa-heart"></i> В избранное</button>
+                            <button class="btn-add" onclick="addToCart('JBL Tune 520BT', 3490)">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category-block">
+                <h3 class="category-title">Компьютеры и Ноутбуки</h3>
+                <div class="products-grid">
+                    <div class="product-card">
+                        <div class="product-img">
+                            <img src="фото/CYBORG 15 A13U.jpg" alt="MSI Cyborg 15 A13U">
+                            <div class="product-actions">
+                                <div class="action-btn" data-name="MSI Cyborg 15 A13U" onclick="toggleFavorite(event, 'MSI Cyborg 15 A13U', 69990)"><i class="far fa-heart"></i></div>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-title">MSI Cyborg 15 A13U</div>
+                            <div class="product-price">69 990 ₽</div>
+                            <button class="btn-fav-inline" data-name="MSI Cyborg 15 A13U" onclick="toggleFavorite(event, 'MSI Cyborg 15 A13U', 69990)"><i class="far fa-heart"></i> В избранное</button>
+                            <button class="btn-add" onclick="addToCart('MSI Cyborg 15 A13U', 69990)">В корзину</button>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-img">
+                            <img src="фото/ROG STRIX SCAR 18.jpg">
+                            <div class="product-actions">
+                                <div class="action-btn" data-name="ASUS ROG Strix Scar 18" onclick="toggleFavorite(event, 'ASUS ROG Strix Scar 18', 229990)"><i class="far fa-heart"></i></div>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-title">ASUS ROG Strix Scar 18</div>
+                            <div class="product-price">229 990 ₽</div>
+                            <button class="btn-fav-inline" data-name="ASUS ROG Strix Scar 18" onclick="toggleFavorite(event, 'ASUS ROG Strix Scar 18', 229990)"><i class="far fa-heart"></i> В избранное</button>
+                            <button class="btn-add" onclick="addToCart('ASUS ROG Strix Scar 18', 229990)">В корзину</button>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-img">
+                            <img src="фото/MACBOOC AIR M3.jpg">
+                            <div class="product-actions">
+                                <div class="action-btn" data-name="MacBook Air M3" onclick="toggleFavorite(event, 'MacBook Air M3', 134990)"><i class="far fa-heart"></i></div>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-title">MacBook Air M3</div>
+                            <div class="product-price">134 990 ₽</div>
+                            <button class="btn-fav-inline" data-name="MacBook Air M3" onclick="toggleFavorite(event, 'MacBook Air M3', 134990)"><i class="far fa-heart"></i> В избранное</button>
+                            <button class="btn-add" onclick="addToCart('MacBook Air M3', 134990)">В корзину</button>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-img">
+                            <img src="фото/PRECISION 7780.jpg">
+                            <div class="product-actions">
+                                <div class="action-btn" data-name="Dell Precision 7780" onclick="toggleFavorite(event, 'Dell Precision 7780', 229990)"><i class="far fa-heart"></i></div>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-title">Dell Precision 7780</div>
+                            <div class="product-price">229 990 ₽</div>
+                            <button class="btn-fav-inline" data-name="Dell Precision 7780" onclick="toggleFavorite(event, 'Dell Precision 7780', 229990)"><i class="far fa-heart"></i> В избранное</button>
+                            <button class="btn-add" onclick="addToCart('Dell Precision 7780', 229990)">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-about" class="page-section">
+        <div class="container">
+            <div class="about-hero">
+                <h1>О компании VOLT</h1>
+                <p>Мы делаем технологии доступными с 2026 года. Официальная гарантия, поддержка и быстрая доставка.</p>
+            </div>
+            <div class="features">
+                <div class="feature">
+                    <img src="фото/гарантия.png" class="feature-img">
+                    <h3>Гарантия</h3>
+                    <p>Официально 12 мес.</p>
+                </div>
+                <div class="feature">
+                    <img src="фото/быстрая доставка.png" class="feature-img">
+                    <h3>Доставка</h3>
+                    <p>По всей России</p>
+                </div>
+                <div class="feature">
+                    <img src="фото/поддержка.png" class="feature-img">
+                    <h3>Поддержка</h3>
+                    <p>24/7 онлайн</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>VOLTShop</p>
+        <p>Москва, ул. Пушкино д. Колотушкино</p>
+        <p>8 (800) 888-88-88</p>
+        <p>Все права защищены</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
